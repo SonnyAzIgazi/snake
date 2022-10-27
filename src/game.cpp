@@ -19,25 +19,20 @@
 
 #define WINDOW_SIZE 600
 
-Uint32 my_callbackfunc(Uint32 interval, void *param)
+Uint32 tickEventCreator(Uint32 interval, void *param)
 {
-    SDL_Event event;
-    SDL_UserEvent userevent;
+	SDL_Event event;
+	SDL_UserEvent userevent;
+	userevent.type = SDL_USEREVENT;
+	userevent.code = 0;
+	userevent.data1 = NULL;
+	userevent.data2 = NULL;
 
-    /* In this example, our callback pushes a function
-    into the queue, and causes our callback to be called again at the
-    same interval: */
+	event.type = SDL_USEREVENT;
+	event.user = userevent;
 
-    userevent.type = SDL_USEREVENT;
-    userevent.code = 0;
-    userevent.data1 = NULL;
-    userevent.data2 = NULL;
-
-    event.type = SDL_USEREVENT;
-    event.user = userevent;
-
-    SDL_PushEvent(&event);
-    return(interval);
+	SDL_PushEvent(&event);
+	return(interval);
 }
 
 Game::Game() {
@@ -54,7 +49,7 @@ Game::Game() {
 		if (SDL_CreateWindowAndRenderer(WINDOW_SIZE+1, WINDOW_SIZE+1, 0, &window, &renderer) == 0) {
 			 SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 			
-			SDL_TimerID my_timer_id = SDL_AddTimer((Uint32)300, (SDL_TimerCallback)my_callbackfunc, (void *)12);
+			SDL_TimerID my_timer_id = SDL_AddTimer((Uint32)300, (SDL_TimerCallback)tickEventCreator, (void *)12);
 
 			while (running) {
 				this->Render();
@@ -99,25 +94,25 @@ void Game::Render() {
 	int eye2X;
 	int eye2Y;
 
-	if (this->snake->currentMovement == M_UP) {
+	if (this->snake->lastMovement == M_UP) {
 		eyeX = first->x + 10;
 		eyeY = first->y + 10;
 
 		eye2X = first->x + 50 - 10;
 		eye2Y = first->y + 10;
-	} else if (this->snake->currentMovement == M_DOWN) {
+	} else if (this->snake->lastMovement == M_DOWN) {
 		eyeX = first->x + 10;
 		eyeY = first->y + 50 - 10;
 
 		eye2X = first->x + 50 - 10;
 		eye2Y = first->y + 50 - 10;
-	} else if (this->snake->currentMovement == M_LEFT) {
+	} else if (this->snake->lastMovement == M_LEFT) {
 		eyeX = first->x + 10;
 		eyeY = first->y + 10;
 
 		eye2X = first->x + 10;
 		eye2Y = first->y + 50 - 10;
-	} else if (this->snake->currentMovement == M_RIGHT) {
+	} else if (this->snake->lastMovement == M_RIGHT) {
 		eyeX = first->x + 50 - 10;
 		eyeY = first->y + 10;
 

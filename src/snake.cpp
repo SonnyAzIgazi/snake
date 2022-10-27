@@ -46,6 +46,8 @@ void Snake::tick() {
 			break;
 	}
 
+	lastMovement = this->currentMovement;
+
 	int lastX = nodes[0]->x;
 	int lastY = nodes[0]->y;
 

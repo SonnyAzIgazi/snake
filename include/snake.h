@@ -16,6 +16,7 @@ class Snake {
 		std::vector<SDL_Rect*> nodes;
 
 		char currentMovement;
+		char lastMovement;
 		bool addTail;
 
 		Snake(int x, int y, Uint8 tail);
