@@ -1,4 +1,5 @@
 #include "game.h"
+#include "snake.h"
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_mouse.h>
 #include <SDL2/SDL_rect.h>
@@ -86,6 +87,58 @@ void Game::Render() {
 		SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 		SDL_RenderFillRect(renderer, node);
 	}
+
+	SDL_Rect* first = *(this->snake->nodes.begin());
+
+	SDL_SetRenderDrawColor(renderer, 0, 240, 0, 255);
+	SDL_RenderFillRect(renderer, first);
+
+	int eyeX;
+	int eyeY;
+
+	int eye2X;
+	int eye2Y;
+
+	if (this->snake->currentMovement == M_UP) {
+		eyeX = first->x + 10;
+		eyeY = first->y + 10;
+
+		eye2X = first->x + 50 - 10;
+		eye2Y = first->y + 10;
+	} else if (this->snake->currentMovement == M_DOWN) {
+		eyeX = first->x + 10;
+		eyeY = first->y + 50 - 10;
+
+		eye2X = first->x + 50 - 10;
+		eye2Y = first->y + 50 - 10;
+	} else if (this->snake->currentMovement == M_LEFT) {
+		eyeX = first->x + 10;
+		eyeY = first->y + 10;
+
+		eye2X = first->x + 10;
+		eye2Y = first->y + 50 - 10;
+	} else if (this->snake->currentMovement == M_RIGHT) {
+		eyeX = first->x + 50 - 10;
+		eyeY = first->y + 10;
+
+		eye2X = first->x + 50 - 10;
+		eye2Y = first->y + 50 - 10;
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderFillRect(renderer, new SDL_Rect({
+		.x = eyeX,
+		.y = eyeY,
+		.w = 10,
+		.h = 10
+	}));
+	SDL_RenderFillRect(renderer, new SDL_Rect({
+		.x = eye2X,
+		.y = eye2Y,
+		.w = 10,
+		.h = 10
+	}));
+	
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	SDL_RenderFillRect(renderer, this->food);
